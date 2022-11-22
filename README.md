@@ -9,9 +9,9 @@
 
 ### Node.js(server) ile Tarayıcı-Browser (client) arasında bilgi alış verişini sağlayan bir soket kütüphanesidir. Soketler bildiğimiz HTTP isteklerinden farklı olarak sunucudan(server) istemciye(client) bir olay sonucu veri gönderebilir.
 
-![img]('/client/img/socket=io.png')
+![img]('client/img/socketio.png')
 
-![img]('/client/img/socket-iotwo.png)
+![img]('client/img/socket-iotwo.png)
 
 ### Görüldüğü üzere soket her iki taraflı olarak veri iletimi yapabilmektedir.
 
@@ -107,9 +107,7 @@ export const subscribe = (cb) => {
 };
 ```
 
-```js
-__OLAY_ADI__ ‘ emit ile beraber gönderilen olay adı, __DATA__ yine aynı şekilde .emit( … ) ile beraber gönderdiğimiz veridir. __RESPONSE__ burada bir fonksiyon olarak karşımıza çıkıyor. Eğer bir gelen isteğe karşı bir veri göndermek istiyorsanız _RESPONSE_([CEVAP]) ile gönderebilirsiniz.
-```
+### **OLAY_ADI** ‘ emit ile beraber gönderilen olay adı, **DATA** yine aynı şekilde .emit( … ) ile beraber gönderdiğimiz veridir. **RESPONSE** burada bir fonksiyon olarak karşımıza çıkıyor. Eğer bir gelen isteğe karşı bir veri göndermek istiyorsanız _RESPONSE_([CEVAP]) ile gönderebilirsiniz.
 
 ### Proje başlatma
 

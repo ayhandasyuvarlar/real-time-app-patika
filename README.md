@@ -9,9 +9,9 @@
 
 ### Node.js(server) ile Tarayıcı-Browser (client) arasında bilgi alış verişini sağlayan bir soket kütüphanesidir. Soketler bildiğimiz HTTP isteklerinden farklı olarak sunucudan(server) istemciye(client) bir olay sonucu veri gönderebilir.
 
-![img]('client/img/socketio.png')
+![img](client/img/socketio.png)
 
-![img]('client/img/socket-iotwo.png)
+![img](client/img/socket-iotwo.png)
 
 ### Görüldüğü üzere soket her iki taraflı olarak veri iletimi yapabilmektedir.
 

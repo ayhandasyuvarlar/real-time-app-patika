@@ -84,7 +84,7 @@ socket.on("connect", () => console.log("server is connecting successful"));
 
 ### Bağlı sokete veri gönderme
 
-![img](img/data-trans.png)
+![img](client/img/data-trans.png)
 
 ```js
 socket.on(__OLAY_ADI__, function (__DATA__, __RESPONSE__) {
@@ -121,6 +121,6 @@ npm install
 
 - Bu işlem bittikten sonra 'package.json' dosyasına gittiğinizde "scripts" objesi altındaki komutları arasında size yarayan komutu çalıştırın ve uygulama hazır
 
-![img](img/demo.png)
+![img](client/img/demo.png)
 
 ### bu bölümü okuduğunuz için teşekkür ederim (thank you) kendinize iyi bakın , görüşürüz (see you)

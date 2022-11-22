@@ -1,70 +1,126 @@
-# Getting Started with Create React App
+# Patika-Kodluyoruz Real-Time-App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### Bu uygulamanın amacı gerçek zamanda çalışan uygulamayı basitçe anlatabilmekti , gayet güzel bir anlatımda alışverişlerin nasıl olduğunu anlamış bulunmaktayım. öğrendiğim şeyler
 
-## Available Scripts
+- socket.io
+- veri alışverişi
 
-In the project directory, you can run:
+## Socket.IO
 
-### `npm start`
+### Node.js(server) ile Tarayıcı-Browser (client) arasında bilgi alış verişini sağlayan bir soket kütüphanesidir. Soketler bildiğimiz HTTP isteklerinden farklı olarak sunucudan(server) istemciye(client) bir olay sonucu veri gönderebilir.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+![img]('/client/img/socket=io.png')
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+![img]('/client/img/socket-iotwo.png)
 
-### `npm test`
+### Görüldüğü üzere soket her iki taraflı olarak veri iletimi yapabilmektedir.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Socket.IO kurulum
 
-### `npm run build`
+### İşletim sisteminizden konsolu açıp aşağıdaki npm yükleme komutlarını yazınız.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```js
+npm install express
+npm install socket.io
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Socket.IO Bağlantı Kurulumu
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+![img](/client/img/socket-iothree.png)
 
-### `npm run eject`
+### Sunucudan Bağlantı Kurma
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```js
+const app = require("express")();
+const http = require("http").Server(app);
+const io = require("socket.io")(http);
+http.listen(3000);
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Sunucudan Bağlantı Yakalama
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+````js
+io.on('connection', function(socket){
+/*
+   Client tarafından bir soket bağlandığında
+   Burada [socket] değişkeni ile bu bağlanan soket ile
+   veri alış verişini yönetir.
+*/
+})```
+````
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Socketin sahip olduğu id (Sunucudan)
 
-## Learn More
+```js
+socket.id;
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Id’ sini bildiğimiz sockete erişme
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```js
+io.sockets.connected[__ID__];
+```
 
-### Code Splitting
+### Client’den Bağlantı Kurma
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```js
+export const connectingBackend = () => {
+  console.log("server is connecting loading..");
 
-### Analyzing the Bundle Size
+  socket = io("http://localhost:3001/", {
+    transports: ["websocket"],
+  });
+  socket.on("connect", () => console.log("server is connecting successful"));
+};
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### Client’den Bağlantı Yakalama
 
-### Making a Progressive Web App
+```js
+socket.on("connect", () => console.log("server is connecting successful"));
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## socket.emit( … )
 
-### Advanced Configuration
+### Bağlı sokete veri gönderme
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+![img](img/data-trans.png)
 
-### Deployment
+```js
+socket.on(__OLAY_ADI__, function (__DATA__, __RESPONSE__) {
+  console.log("res:", data);
+  __RESPONSE__("req");
+});
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+```js
+// kodlar client dosyası içersindedir .
+export const resultBackendMessage = (color) => {
+  socket.emit("newColor", color);
+};
 
-### `npm run build` fails to minify
+export const subscribe = (cb) => {
+  socket.on("receive", (color) => {
+    console.log(color);
+    cb(color);
+  });
+};
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+```js
+__OLAY_ADI__ ‘ emit ile beraber gönderilen olay adı, __DATA__ yine aynı şekilde .emit( … ) ile beraber gönderdiğimiz veridir. __RESPONSE__ burada bir fonksiyon olarak karşımıza çıkıyor. Eğer bir gelen isteğe karşı bir veri göndermek istiyorsanız _RESPONSE_([CEVAP]) ile gönderebilirsiniz.
+```
+
+### Proje başlatma
+
+- Öncelikle her iki klasorü komut isteminde açın ve bağımlı olduğu paketleri indirin
+
+```js
+npm install
+```
+
+- Bu işlem bittikten sonra 'package.json' dosyasına gittiğinizde "scripts" objesi altındaki komutları arasında size yarayan komutu çalıştırın ve uygulama hazır
+
+![img](img/demo.png)
+
+### bu bölümü okuduğunuz için teşekkür ederim (thank you) kendinize iyi bakın , görüşürüz (see you)

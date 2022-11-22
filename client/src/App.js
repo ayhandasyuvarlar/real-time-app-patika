@@ -8,7 +8,7 @@ function App() {
   const [colorActive, setColorActive] = useState("");
   useEffect(() => {
     initialState();
-    subscribe((color) => {
+    subscribe((color) => { 
       setColorActive(color);
     });
   });
